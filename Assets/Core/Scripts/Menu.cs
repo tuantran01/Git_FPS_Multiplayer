@@ -215,7 +215,7 @@ public class Menu : MonoBehaviourPunCallbacks
         Hashtable options = new Hashtable
         {
             { "Time", 600 },
-            { "GameMode", 0},
+            { "GameMode", GameMode},
             {"redscore", 0 },
             {"bluescore", 0 },
             {"GT", GameMode }
@@ -237,7 +237,7 @@ public class Menu : MonoBehaviourPunCallbacks
         Hashtable options = new Hashtable
         {
             { "Time", 600 },
-            { "GameMode", 0},
+            { "GameMode", GameMode},
             {"redscore", 0 },
             {"bluescore", 0 },
             {"GT", GameMode }
