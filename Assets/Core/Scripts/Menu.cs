@@ -28,6 +28,10 @@ public class Menu : MonoBehaviourPunCallbacks
     public int GameMode;
     public Image DMButton;
     public Image TDMButton;
+
+    public InputField IDField;
+    public GameObject Player;
+    public Text nameText;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,9 +41,30 @@ public class Menu : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        PhotonNetwork.NickName = "Player " + Random.Range(0, 99999);
+        if (PlayerPrefs.GetString("Username") == "")
+        {
+            PhotonNetwork.NickName = "Player " + Random.Range(0, 99999);
+        }
+        else
+        {
+            PhotonNetwork.NickName = PlayerPrefs.GetString("Username");
+        }
         Debug.Log("Connected to master");
         PhotonNetwork.JoinLobby();
+    }
+
+    public void SetID()
+    {
+        if (IDField.text != "")
+        {
+            PlayerPrefs.SetString("Username", IDField.text);
+            PhotonNetwork.NickName = IDField.text;
+        }
+    }
+
+    public void PlayerSettings()
+    {
+        menusate = 5;
     }
 
     public override void OnJoinedLobby()
@@ -60,6 +85,7 @@ public class Menu : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
+        nameText.text = PhotonNetwork.NickName;
         if (GameMode == 0)
         {
             DMButton.color = Color.green;
@@ -128,6 +154,8 @@ public class Menu : MonoBehaviourPunCallbacks
             createCanvas.SetActive(false);
             lobbyCanvas.SetActive(false);
             optionsUI.SetActive(false);
+            Player.SetActive(false);
+
         }
         if (menusate == 1)
         {
@@ -136,6 +164,8 @@ public class Menu : MonoBehaviourPunCallbacks
             createCanvas.SetActive(false);
             lobbyCanvas.SetActive(false);
             optionsUI.SetActive(false);
+            Player.SetActive(false);
+
         }
         if (menusate == 2)
         {
@@ -144,6 +174,8 @@ public class Menu : MonoBehaviourPunCallbacks
             createCanvas.SetActive(true);
             lobbyCanvas.SetActive(false);
             optionsUI.SetActive(false);
+            Player.SetActive(false);
+
         }
         if (menusate == 3)
         {
@@ -152,6 +184,8 @@ public class Menu : MonoBehaviourPunCallbacks
             createCanvas.SetActive(false);
             lobbyCanvas.SetActive(true);
             optionsUI.SetActive(false);
+            Player.SetActive(false);
+
         }
         if (menusate == 4)
         {
@@ -160,6 +194,18 @@ public class Menu : MonoBehaviourPunCallbacks
             createCanvas.SetActive(false);
             lobbyCanvas.SetActive(false);
             optionsUI.SetActive(true);
+            Player.SetActive(false);
+
+        }
+
+        if (menusate == 5)
+        {
+            loadingCanvas.SetActive(false);
+            mainCanvas.SetActive(false);
+            createCanvas.SetActive(false);
+            lobbyCanvas.SetActive(false);
+            optionsUI.SetActive(false);
+            Player.SetActive(true);
         }
 
     }
@@ -220,7 +266,7 @@ public class Menu : MonoBehaviourPunCallbacks
             {"bluescore", 0 },
             {"GT", GameMode }
 
-        }; 
+        };
         roomOptions.CustomRoomPropertiesForLobby = lobbyProps;
         roomOptions.CustomRoomProperties = options;
         PhotonNetwork.CreateRoom("Room " + Random.Range(0, 1000), roomOptions);
@@ -242,7 +288,7 @@ public class Menu : MonoBehaviourPunCallbacks
             {"bluescore", 0 },
             {"GT", GameMode }
 
-        }; 
+        };
         roomOptions.CustomRoomPropertiesForLobby = lobbyProps;
         roomOptions.CustomRoomProperties = options;
 
